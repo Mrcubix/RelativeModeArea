@@ -19,8 +19,11 @@ public class RelativeModeArea : IPositionedPipelineElement<IDeviceReport>
     private IDriver _driver;
     private bool _initialized = false;
 
+    // Lines per millimeter for each input type
     private Vector2 _penLpmm;
     private Vector2 _touchLpmm;
+
+    // The rectangle representing the defined area depending on the input type
     private RectangleF _penRect;
     private RectangleF _touchRect;
 
@@ -54,13 +57,13 @@ public class RelativeModeArea : IPositionedPipelineElement<IDeviceReport>
         _tablet = tablet;
         _driver = driver;
 
-        // Obtain the output Mode
         if (_tablet == null || _driver == null)
             return;
 
         if (_driver is not Driver oDriver)
             return;
 
+        // Obtain the device (there may be multiple of the same device)
         var deviceTree = oDriver.InputDevices.Where(x => x.Properties == Tablet.Properties)
                                              .Where(x => x.OutputMode is RelativeOutputMode)
                                              .FirstOrDefault();
@@ -86,8 +89,16 @@ public class RelativeModeArea : IPositionedPipelineElement<IDeviceReport>
         _initialized = true;
     }
 
+    /// <summary>
+    ///   Handle inputs and emit in specific situations
+    /// </summary>
+    /// <param name="report">A Tablet report</param>
+    /// <remarks>
+    ///   This will return without emitting if the input is outside the defined area
+    /// </remarks>
     public void Consume(IDeviceReport report)
     {
+        // The plugin may only initialize if the current output mode is relative
         if (_initialized)
         {
             if (report is TouchConvertedReport touchConverted)
