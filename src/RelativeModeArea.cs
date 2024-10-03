@@ -76,13 +76,13 @@ public class RelativeModeArea : IPositionedPipelineElement<IDeviceReport>
 
         var digitizer = _tablet.Properties.Specifications.Digitizer;
 
-        // Lines per millimeter
+        // Lines per millimeter for each input type, their resolution are usually different
         _penLpmm = new Vector2(digitizer.MaxX / digitizer.Width, digitizer.MaxY / digitizer.Height);
         _touchLpmm = new Vector2(TouchMaxX / digitizer.Width, TouchMaxX / digitizer.Height);
 
         var topLeft = new Vector2(X, Y) - new Vector2(Width / 2, Height / 2);
 
-        // Rectangles
+        // Rectangles for each input types as their resolution are usually different
         _penRect = new RectangleF(topLeft.X * _penLpmm.X, topLeft.Y * _penLpmm.Y, Width * _penLpmm.X, Height * _penLpmm.Y);
         _touchRect = new RectangleF(topLeft.X * _touchLpmm.X, topLeft.Y * _touchLpmm.Y, Width * _touchLpmm.X, Height * _touchLpmm.Y);
 
