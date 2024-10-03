@@ -1,0 +1,4 @@
+[submodule ".modules/OTD.EnhancedOutputMode"]
+	path = .modules/OTD.EnhancedOutputMode
+	url = https://github.com/Mrcubix/OTD.EnhancedOutputMode.git
+	branch = 0.6.x

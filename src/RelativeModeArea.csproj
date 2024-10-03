@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../.modules/OTD.EnhancedOutputMode/OTD.EnhancedOutputMode.Lib/OTD.EnhancedOutputMode.Lib.csproj" Private="False" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OpenTabletDriver" Version="0.6.4.0" Publish="False" />
+    <PackageReference Include="OpenTabletDriver.Plugin" Version="0.6.4.0" Publish="False" />
+  </ItemGroup>
+
+</Project>
