@@ -27,8 +27,6 @@ public class RelativeModeArea : IPositionedPipelineElement<IDeviceReport>
     private RectangleF _penRect;
     private RectangleF _touchRect;
 
-    public PipelinePosition Position => PipelinePosition.PreTransform;
-
     public event Action<IDeviceReport> Emit;
 
     [TabletReference]
@@ -51,6 +49,8 @@ public class RelativeModeArea : IPositionedPipelineElement<IDeviceReport>
             Initialize(_tablet, _driver);
         }
     }
+
+    public PipelinePosition Position => PipelinePosition.PreTransform;
 
     public void Initialize(TabletReference tablet, IDriver driver)
     {
