@@ -159,6 +159,7 @@ public class RelativeModeArea : IPositionedPipelineElement<IDeviceReport>
     public int TouchMaxY { get; set; }
 
     [Property("Width"),
+     Unit("mm"),
      DefaultPropertyValue(1),
      ToolTip("Relative Mode Area:\n\n" +
              "The width of the relative mode area. \n" +
@@ -166,6 +167,7 @@ public class RelativeModeArea : IPositionedPipelineElement<IDeviceReport>
     public float Width { get; set; }
 
     [Property("Height"),
+     Unit("mm"),
      DefaultPropertyValue(1),
      ToolTip("Relative Mode Area:\n\n" +
              "The height of the relative mode area. \n" +
@@ -173,14 +175,16 @@ public class RelativeModeArea : IPositionedPipelineElement<IDeviceReport>
     public float Height { get; set; }
 
     [Property("X"),
-     DefaultPropertyValue(1),
+     Unit("mm"),
+     DefaultPropertyValue(0),
      ToolTip("Relative Mode Area:\n\n" +
              "The centered position on the X axis. \n" +
              "Switch to Absolute Mode, create your area and copy the value to here.")]
     public float X { get; set; }
 
     [Property("Y"),
-     DefaultPropertyValue(1),
+     Unit("mm"),
+     DefaultPropertyValue(0),
      ToolTip("Relative Mode Area:\n\n" +
              "The centered position on the Y axis. \n" +
              "Switch to Absolute Mode, create your area and copy the value to here.")]
