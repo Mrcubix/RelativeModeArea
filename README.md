@@ -11,3 +11,12 @@ This plugin will allow you to define area within which you need need to place yo
 
 Place the dll for this plugin in the same folder as OTD.EnhancedOutputMode.Lib.dll
 (in the same folder where OpenTabletDriver Installed OTD.EnhancedOutputMode).
+
+## How to use
+
+1. Make your area using the Absolute Mode's Area Editor,
+2. Input the values at the bottom (except rotation as it is not supported yet) into the plugin,
+3. Switch back to Relative Mode,
+4. Save or Apply and it should work!
+
+The X & Y values represent the center of the area, like in OpenTabletDriver.
