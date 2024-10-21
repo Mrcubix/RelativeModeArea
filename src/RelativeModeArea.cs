@@ -105,6 +105,8 @@ public class RelativeModeArea : IPositionedPipelineElement<IDeviceReport>
                 HandleTouch(touchConverted);
             else if (report is IAbsolutePositionReport tablet)
                 HandlePosition(tablet);
+            else
+                Emit?.Invoke(report);
         }
         else
             Emit?.Invoke(report);
