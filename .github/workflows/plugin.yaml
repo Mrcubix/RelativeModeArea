@@ -38,4 +38,10 @@ jobs:
       with:
         name: "RelativeModeArea"
         path: |
-          ./build/RelativeModeArea.dll
+          ./build/Base/RelativeModeArea.zip
+
+    - uses: actions/upload-artifact@main
+      with:
+        name: "RelativeModeArea.Touch"
+        path: |
+          ./build/Touch/RelativeModeArea.Touch.zip
