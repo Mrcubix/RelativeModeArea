@@ -4,7 +4,9 @@ on:
   push:
     paths:
       - '.modules/**'
-      - 'src/**'
+      - 'RelativeModeArea/**'
+      - 'RelativeModeArea.Touch/**'
+      - 'RelativeModeArea.Common/**'
     branches:
       - master
 
