@@ -8,9 +8,11 @@ using OpenTabletDriver.Plugin.Tablet;
 
 namespace RelativeModeArea.Common;
 
-public class RelativeModeAreaBase(string group)
+public class RelativeModeAreaBase
 {
-    private readonly string _group = group;
+    private readonly string _group;
+
+    public RelativeModeAreaBase(string group) => _group = group;
 
     protected TabletReference _tablet;
     protected IDriver _driver;
