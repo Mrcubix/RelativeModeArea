@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RelativeModeArea", "src\RelativeModeArea.csproj", "{B264AAEE-AB64-448D-98B9-742DB4088562}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RelativeModeArea", "RelativeModeArea\RelativeModeArea.csproj", "{B264AAEE-AB64-448D-98B9-742DB4088562}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RelativeModeArea.Common", "RelativeModeArea.Common\RelativeModeArea.Common.csproj", "{3620B298-2B53-4A16-877C-ADDA570C71A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RelativeModeArea.Touch", "RelativeModeArea.Touch\RelativeModeArea.Touch.csproj", "{B08CE944-78E0-40E1-A8D4-59937921F333}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +22,13 @@ Global
 		{B264AAEE-AB64-448D-98B9-742DB4088562}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B264AAEE-AB64-448D-98B9-742DB4088562}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B264AAEE-AB64-448D-98B9-742DB4088562}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3620B298-2B53-4A16-877C-ADDA570C71A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3620B298-2B53-4A16-877C-ADDA570C71A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3620B298-2B53-4A16-877C-ADDA570C71A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3620B298-2B53-4A16-877C-ADDA570C71A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B08CE944-78E0-40E1-A8D4-59937921F333}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B08CE944-78E0-40E1-A8D4-59937921F333}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B08CE944-78E0-40E1-A8D4-59937921F333}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B08CE944-78E0-40E1-A8D4-59937921F333}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

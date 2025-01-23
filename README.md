@@ -1,13 +1,22 @@
 # Relative Mode Area
 
-This plugin will allow you to define area within which you need need to place your finger to move the cursor.
+This plugin will allow you to define area within which you need need to place your pen, Absolute mouse or finger to move the cursor.
 
 ## Dependencies
 
 - [OpenTabletDriver 0.6.4.0](https://github.com/OpenTabletDriver/OpenTabletDriver)
+
+### For Touch only
+
 - [OTD.EnhancedOutputMode](https://github.com/Mrcubix/OTD.EnhancedOutputMode)
 
 ## Installation
+
+### Pen & Mouse only
+
+Drag the zip file inside hte Plugin Manager or `File` > `Install Plugin...`
+
+### Pen, Mouse & Touch
 
 Place the dll for this plugin in the same folder as OTD.EnhancedOutputMode.Lib.dll
 (in the same folder where OpenTabletDriver Installed OTD.EnhancedOutputMode).

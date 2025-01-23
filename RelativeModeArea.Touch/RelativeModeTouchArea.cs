@@ -3,56 +3,21 @@ using System.Numerics;
 using OpenTabletDriver;
 using OpenTabletDriver.Plugin;
 using OpenTabletDriver.Plugin.Attributes;
-using OpenTabletDriver.Plugin.DependencyInjection;
 using OpenTabletDriver.Plugin.Output;
 using OpenTabletDriver.Plugin.Tablet;
 using OTD.EnhancedOutputMode.Lib.Tablet;
+using RelativeModeArea.Common;
 
-namespace RelativeModeArea;
+namespace RelativeModeArea.Touch;
 
 [PluginName(PLUGIN_NAME)]
-public class RelativeModeArea : IPositionedPipelineElement<IDeviceReport>
+public class RelativeModeTouchArea : RelativeModeAreaBase, IPositionedPipelineElement<IDeviceReport>
 {
-    public const string PLUGIN_NAME = "Relative Mode Area";
+    public const string PLUGIN_NAME = "Relative Mode Area (+ Touch)";
 
-    private TabletReference _tablet;
-    private IDriver _driver;
-    private bool _initialized = false;
+    public RelativeModeTouchArea() : base(PLUGIN_NAME) { }
 
-    // Lines per millimeter for each input type
-    private Vector2 _penLpmm;
-    private Vector2 _touchLpmm;
-
-    // The rectangle representing the defined area depending on the input type
-    private RectangleF _penRect;
-    private RectangleF _touchRect;
-
-    public event Action<IDeviceReport> Emit;
-
-    [TabletReference]
-    public TabletReference Tablet { 
-        get => _tablet;
-        set
-        {
-            _tablet = value;
-            Initialize(_tablet, _driver);
-        }
-    }
-
-    [Resolved]
-    public IDriver Driver
-    {
-        get => _driver;
-        set
-        {
-            _driver = value;
-            Initialize(_tablet, _driver);
-        }
-    }
-
-    public PipelinePosition Position => PipelinePosition.PreTransform;
-
-    public void Initialize(TabletReference tablet, IDriver driver)
+    public override void Initialize(TabletReference tablet, IDriver driver)
     {
         _tablet = tablet;
         _driver = driver;
@@ -77,14 +42,14 @@ public class RelativeModeArea : IPositionedPipelineElement<IDeviceReport>
         var digitizer = _tablet.Properties.Specifications.Digitizer;
 
         // Lines per millimeter for each input type, their resolution are usually different
-        _penLpmm = new Vector2(digitizer.MaxX / digitizer.Width, digitizer.MaxY / digitizer.Height);
-        _touchLpmm = new Vector2(TouchMaxX / digitizer.Width, TouchMaxX / digitizer.Height);
+        _touchLpmm = new Vector2(TouchMaxX / digitizer.Width, TouchMaxY / digitizer.Height);
 
-        var topLeft = new Vector2(X, Y) - new Vector2(Width / 2, Height / 2);
+        var topLeft = new Vector2(_x, _y) - new Vector2(_width / 2, _height / 2);
 
-        // Rectangles for each input types as their resolution are usually different
-        _penRect = new RectangleF(topLeft.X * _penLpmm.X, topLeft.Y * _penLpmm.Y, Width * _penLpmm.X, Height * _penLpmm.Y);
-        _touchRect = new RectangleF(topLeft.X * _touchLpmm.X, topLeft.Y * _touchLpmm.Y, Width * _touchLpmm.X, Height * _touchLpmm.Y);
+        _touchRect = new RectangleF(topLeft.X * _touchLpmm.X, topLeft.Y * _touchLpmm.Y, _width * _touchLpmm.X, _height * _touchLpmm.Y);
+
+        if (_touchRect.Left < 0 || _touchRect.Top < 0 || _touchRect.Right > TouchMaxX || _touchRect.Bottom > TouchMaxY)
+            Log.Write(PLUGIN_NAME, "Part of your defined area is outside of the touch tablet's digitizer area", LogLevel.Warning);
 
         _initialized = true;
     }
@@ -96,37 +61,19 @@ public class RelativeModeArea : IPositionedPipelineElement<IDeviceReport>
     /// <remarks>
     ///   This will return without emitting if the input is outside the defined area
     /// </remarks>
-    public void Consume(IDeviceReport report)
+    public override void Consume(IDeviceReport report)
     {
         // The plugin may only initialize if the current output mode is relative
         if (_initialized)
         {
             if (report is TouchConvertedReport touchConverted)
                 HandleTouch(touchConverted);
-            else if (report is IAbsolutePositionReport tablet)
-                HandlePosition(tablet);
+            //else if (Handle(report) == false)
             else
-                Emit?.Invoke(report);
+                OnEmit(report);
         }
         else
-            Emit?.Invoke(report);
-    }
-
-    private void HandlePosition(IAbsolutePositionReport positionReport)
-    {
-        var position = positionReport.Position;
-
-        if (position.X < _penRect.Left)
-            return;
-        else if (position.X > _penRect.Right)
-            return;
-
-        if (position.Y < _penRect.Top)
-            return;
-        else if (position.Y > _penRect.Bottom)
-            return;
-
-        Emit?.Invoke(positionReport);
+            OnEmit(report);
     }
 
     private void HandleTouch(TouchConvertedReport touchReport)
@@ -143,7 +90,7 @@ public class RelativeModeArea : IPositionedPipelineElement<IDeviceReport>
         else if (position.Y > _touchRect.Bottom)
             return;
 
-        Emit?.Invoke(touchReport);
+        OnEmit(touchReport);
     }
 
     [Property("Touch Max X"),
@@ -166,7 +113,11 @@ public class RelativeModeArea : IPositionedPipelineElement<IDeviceReport>
      ToolTip("Relative Mode Area:\n\n" +
              "The width of the relative mode area. \n" +
              "Switch to Absolute Mode, create your area and copy the value to here.")]
-    public float Width { get; set; }
+    public float Width
+    {
+        get => _width;
+        set => _width = value;
+    }
 
     [Property("Height"),
      Unit("mm"),
@@ -174,7 +125,11 @@ public class RelativeModeArea : IPositionedPipelineElement<IDeviceReport>
      ToolTip("Relative Mode Area:\n\n" +
              "The height of the relative mode area. \n" +
              "Switch to Absolute Mode, create your area and copy the value to here.")]
-    public float Height { get; set; }
+    public float Height
+    {
+        get => _height;
+        set => _height = value;
+    }
 
     [Property("X"),
      Unit("mm"),
@@ -182,7 +137,11 @@ public class RelativeModeArea : IPositionedPipelineElement<IDeviceReport>
      ToolTip("Relative Mode Area:\n\n" +
              "The centered position on the X axis. \n" +
              "Switch to Absolute Mode, create your area and copy the value to here.")]
-    public float X { get; set; }
+    public float X
+    {
+        get => _x;
+        set => _x = value;
+    }
 
     [Property("Y"),
      Unit("mm"),
@@ -190,5 +149,9 @@ public class RelativeModeArea : IPositionedPipelineElement<IDeviceReport>
      ToolTip("Relative Mode Area:\n\n" +
              "The centered position on the Y axis. \n" +
              "Switch to Absolute Mode, create your area and copy the value to here.")]
-    public float Y { get; set; }
+    public float Y
+    {
+        get => _y;
+        set => _y = value;
+    }
 }
